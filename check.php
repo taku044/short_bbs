@@ -19,12 +19,13 @@ try {
 if (isset($_POST['username']) && !$_POST['username'] == "") {
     $user=$_POST['username'];
     $password=$_POST['password'];
-    $stmt = $pdo->prepare('SELECT password FROM user WHERE username = ?');
+    $stmt = $pdo->prepare('SELECT * FROM user WHERE username = ?');
     $stmt->execute([$username]);
     $userin = $stmt->fetch();
 
     if ($user && password_verify($password, $userin['password'])) {
         $_SESSION['username'] = $user;
+        $_SESSION['user_id']=$userin['id'];
         header("Location: form.php");
     } else {
        header("Location: login.php");
